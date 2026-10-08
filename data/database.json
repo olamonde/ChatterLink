@@ -1,0 +1,318 @@
+{
+  "users": [
+    {
+      "id": "usr_admin_master",
+      "role": "ADMIN",
+      "email": "admin@chatterlink.pro",
+      "passwordHash": "25c0a4e7be33035bb3468a8b51cef5dca89d9d16a06436293ce93ce36669f3ac4e0a38dd4f06932bcd54dc3e864e7ef939010d1b0f6e846360b67f882475bcbd",
+      "salt": "aa81e5e3d031db1d66282a842a345f80",
+      "firstName": "Alexandre",
+      "lastName": "Dubois",
+      "isActive": true,
+      "createdAt": "2026-09-01T08:00:00.000Z"
+    },
+    {
+      "id": "usr_cand_camille",
+      "role": "CANDIDATE",
+      "email": "camille.d@example.com",
+      "passwordHash": "a4577a6c041db9806c8bd101c787b8905bcd11073ea5ed1b2df1521d5943d21694838549e2e38bd9fdcad70d5d19cdbbb072a42346ba2f74f75cf9185aca257b",
+      "salt": "d9147257be7331e596d1e14a92e02e70",
+      "firstName": "Camille",
+      "lastName": "Dufresne",
+      "isActive": true,
+      "createdAt": "2026-09-15T10:30:00.000Z"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "prof_camille",
+      "userId": "usr_cand_camille",
+      "country": "France",
+      "city": "Lyon",
+      "ageRange": "25-34",
+      "chatterExperience": "Moins de 6 mois",
+      "experienceLevel": "Intermédiaire",
+      "languages": [
+        {
+          "language": "Français",
+          "level": "Bilingue / Natif"
+        },
+        {
+          "language": "Anglais",
+          "level": "Courant"
+        }
+      ],
+      "availability": "Temps partiel (20-30h / semaine)",
+      "timezone": "UTC+1 (Paris)",
+      "timeSlots": "Soirée (18h-00h) et week-ends",
+      "workType": "Télétravail 100%",
+      "bio": "Passionnée par le marketing relationnel et la communication digitale. J'ai une excellente réactivité par écrit, une orthographe irréprochable et un grand sens de l'empathie pour créer des liens de confiance avec les abonnés.",
+      "skills": [
+        "Excellente orthographe et syntaxe",
+        "Vente douce et conversion personnalisée",
+        "Gestion des objections",
+        "Respect strict de la confidentialité",
+        "Disponibilité soirée"
+      ],
+      "workExperience": "3 mois de chatter pour un créateur de contenu voyage, et 2 ans en support client relationnel par chat.",
+      "updatedAt": "2026-09-18T14:20:00.000Z"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "job_lifestyle_fr_01",
+      "adminId": "usr_admin_master",
+      "title": "Chatter Débutant(e) Motivé(e) · Créatrice Lifestyle & Mode",
+      "description": "Une créatrice de contenu établie dans l'univers mode et lifestyle recherche 2 chatters dynamiques pour animer sa communauté francophone. Aucune expérience préalable en chatter n'est obligatoire : un accompagnement avec script et consignes claires est fourni pour démarrer.",
+      "missions": "· Répondre aux messages entrants des abonnés avec authenticité et courtoisie.\n· Développer des conversations engageantes et valoriser les contenus exclusifs.\n· Respecter la ligne éditoriale et le ton bienveillant de la créatrice.\n· Remonter les retours récurrents de la communauté à l'équipe.",
+      "requiredProfile": "Nous recherchons avant tout une personne motivée, avec une orthographe impeccable en français, un bon sens de la psychologie et une grande discrétion.",
+      "requiredSkills": [
+        "Orthographe française irréprochable",
+        "Aisance relationnelle à l’écrit",
+        "Sérieux et ponctualité",
+        "Connexion internet stable"
+      ],
+      "languages": [
+        "Français"
+      ],
+      "requiredExperience": "Débutant",
+      "beginnerFriendly": true,
+      "availability": "Temps partiel (15h à 20h / semaine)",
+      "workingHours": "Créneaux en fin d’après-midi ou début de soirée (17h - 22h)",
+      "compensation": "Fixe garanti + 12% de commission (est. 1 400 € – 2 200 € / mois)",
+      "compensationPublic": true,
+      "workType": "Télétravail 100%",
+      "openingsCount": 2,
+      "additionalInfo": "Formation initiale de 3 jours offerte. Matériel informatique requis (PC ou tablette récents). Offre reçue et vérifiée par l’administrateur ChatterLink.",
+      "status": "PUBLISHED",
+      "isDemo": true,
+      "createdAt": "2026-09-20T09:00:00.000Z",
+      "publishedAt": "2026-09-20T09:00:00.000Z"
+    },
+    {
+      "id": "job_fitness_bilingual_02",
+      "adminId": "usr_admin_master",
+      "title": "Chatter Bilingue FR / EN · Créatrice Fitness & Wellness",
+      "description": "Créatrice certifiée fitness avec une audience internationale en forte croissance recherche un(e) chatter bilingue pour gérer les interactions privées et les conseils personnalisés aux abonnés.",
+      "missions": "· Gestion du flux de messagerie en français et en anglais.\n· Présentation et vente des programmes de coaching exclusifs.\n· Suivi attentif des demandes des fans VIP.\n· Tenue du tableau de bord quotidien des échanges.",
+      "requiredProfile": "Profil ayant déjà une première expérience réussie en chatter ou en relation client par écrit. Capacité à switcher facilement entre l’anglais et le français.",
+      "requiredSkills": [
+        "Bilingue Français / Anglais fluide",
+        "Expérience préalable en messagerie ou vente",
+        "Sens de la persuasion et closing",
+        "Rapidité de frappe"
+      ],
+      "languages": [
+        "Français",
+        "Anglais"
+      ],
+      "requiredExperience": "Moins de 6 mois",
+      "beginnerFriendly": false,
+      "availability": "Temps plein ou partiel (25h à 35h / semaine)",
+      "workingHours": "Créneau 18h - 00h (heure de Paris)",
+      "compensation": "Fixe 1 200 € + 15% de commission sur ventes (est. 2 500 € – 4 000 €)",
+      "compensationPublic": true,
+      "workType": "Télétravail 100%",
+      "openingsCount": 1,
+      "additionalInfo": "Fort volume d’échanges. Prime mensuelle sur objectifs de conversion atteinte. Offre vérifiée par ChatterLink.",
+      "status": "PUBLISHED",
+      "isDemo": true,
+      "createdAt": "2026-09-22T11:30:00.000Z",
+      "publishedAt": "2026-09-22T11:30:00.000Z"
+    },
+    {
+      "id": "job_night_gaming_03",
+      "adminId": "usr_admin_master",
+      "title": "Chatter Créneaux Nuit & Week-ends · Univers Cosplay & Gaming",
+      "description": "Créatrice active dans le streaming gaming et cosplay cherche un chatter pour couvrir les créneaux nocturnes à fort engagement. Idéal pour profil autonome et habitué aux horaires décalés.",
+      "missions": "· Assurer la présence et le chat pendant les heures nocturnes.\n· Répondre avec réactivité aux abonnés fidèles et abonnés noctambules.\n· Valorisation des packs média exclusifs.\n· Respect des consignes de sécurité et de modération.",
+      "requiredProfile": "Débutant accepté si passionné(e) par la culture internet / gaming et doté(e) d’une excellente écoute.",
+      "requiredSkills": [
+        "Affinité avec le milieu streaming / gaming",
+        "Rythme nocturne régulier",
+        "Empathie et bienveillance",
+        "Rigueur"
+      ],
+      "languages": [
+        "Français"
+      ],
+      "requiredExperience": "Débutant",
+      "beginnerFriendly": true,
+      "availability": "20h à 25h / semaine",
+      "workingHours": "Nuit (23h00 - 05h00) du jeudi au dimanche",
+      "compensation": "Tarif horaire majoré nuit + commissions (est. 1 800 € – 2 600 € / mois)",
+      "compensationPublic": true,
+      "workType": "Télétravail 100%",
+      "openingsCount": 1,
+      "additionalInfo": "Ambiance de travail détendue mais exigence stricte de ponctualité sur les créneaux nocturnes.",
+      "status": "PUBLISHED",
+      "isDemo": true,
+      "createdAt": "2026-09-25T14:15:00.000Z",
+      "publishedAt": "2026-09-25T14:15:00.000Z"
+    },
+    {
+      "id": "job_luxury_senior_04",
+      "adminId": "usr_admin_master",
+      "title": "Chatter Senior / Closer Haut Panier · Créatrice Voyage & Luxe",
+      "description": "Pour un compte à très forte notoriété et clientèle VIP à fort pouvoir d’achat, nous recherchons un profil expérimenté capable de gérer des conversations à haute valeur ajoutée avec un ton élégant et raffiné.",
+      "missions": "· Gestion des relations privilégiées avec les membres du club VIP.\n· Vente de contenus sur-mesure et d’expériences personnalisées.\n· Analyse des profils et personnalisation chirurgicale des messages.\n· Reporting quotidien des performances.",
+      "requiredProfile": "Minimum 1 an d’expérience avérée en chatter ou vente haut de gamme. Excellente culture générale et tact irréprochable.",
+      "requiredSkills": [
+        "Expérience 1 an+ en chatter prouvée",
+        "Psychologie de vente avancée",
+        "Secret professionnel et discrétion totale",
+        "Gestion de crise et modération fine"
+      ],
+      "languages": [
+        "Français",
+        "Anglais"
+      ],
+      "requiredExperience": "1 à 2 ans",
+      "beginnerFriendly": false,
+      "availability": "Temps plein (35h / semaine)",
+      "workingHours": "Planning rotatif avec repos en semaine",
+      "compensation": "20% de commission sans plafond (revenus observés > 3 500 € / mois)",
+      "compensationPublic": true,
+      "workType": "Télétravail 100%",
+      "openingsCount": 1,
+      "additionalInfo": "Période d’essai rémunérée de 2 semaines. Validation directe par l’administrateur après entretien écrit.",
+      "status": "PUBLISHED",
+      "isDemo": true,
+      "createdAt": "2026-09-28T16:00:00.000Z",
+      "publishedAt": "2026-09-28T16:00:00.000Z"
+    },
+    {
+      "id": "job_afternoon_05",
+      "adminId": "usr_admin_master",
+      "title": "Chatter Après-midi (13h-19h) · Créatrice Beauté & Conseils",
+      "description": "Créatrice francophone recherche un chatter attentif et régulier pour gérer les interactions d’après-midi. Formation assurée sur la voix et le style de communication de la créatrice.",
+      "missions": "· Réponses bienveillantes aux questions beauté et bien-être.\n· Animation du flux de stories privées.\n· Partage des offres spéciales en direct.",
+      "requiredProfile": "Débutant accepté. Personne douce, rigoureuse et disponible en semaine de 13h à 19h.",
+      "requiredSkills": [
+        "Orthographe soignée",
+        "Disponibilité en semaine",
+        "Sens du détail"
+      ],
+      "languages": [
+        "Français"
+      ],
+      "requiredExperience": "Débutant",
+      "beginnerFriendly": true,
+      "availability": "30h / semaine",
+      "workingHours": "13h00 - 19h00 du lundi au vendredi",
+      "compensation": "Rémunération fixe 1 500 € + primes de performance",
+      "compensationPublic": true,
+      "workType": "Télétravail 100%",
+      "openingsCount": 1,
+      "additionalInfo": "Contrat renouvelable sur le long terme.",
+      "status": "PUBLISHED",
+      "isDemo": true,
+      "createdAt": "2026-10-01T08:30:00.000Z",
+      "publishedAt": "2026-10-01T08:30:00.000Z"
+    },
+    {
+      "id": "job_draft_06",
+      "adminId": "usr_admin_master",
+      "title": "[Brouillon] Chatter Spécialisé Événements Saisonniers",
+      "description": "Offre en cours de préparation avec la créatrice. Attente de la validation finale des créneaux horaires et du modèle de commissionnement.",
+      "missions": "Animation durant les lancements saisonniers.",
+      "requiredProfile": "Profil réactif.",
+      "requiredSkills": [
+        "Adaptabilité"
+      ],
+      "languages": [
+        "Français"
+      ],
+      "requiredExperience": "Moins de 6 mois",
+      "beginnerFriendly": true,
+      "availability": "15h / semaine",
+      "workingHours": "À définir",
+      "compensation": "En cours de négociation",
+      "compensationPublic": false,
+      "workType": "Télétravail",
+      "openingsCount": 1,
+      "additionalInfo": "Brouillon interne admin.",
+      "status": "DRAFT",
+      "isDemo": true,
+      "createdAt": "2026-10-05T10:00:00.000Z"
+    }
+  ],
+  "applications": [
+    {
+      "id": "app_75fc22c8797b7474",
+      "jobId": "job_afternoon_05",
+      "candidateId": "usr_cand_camille",
+      "status": "SHORTLISTED",
+      "motivation": "Bonjour, je suis très intéressée par ce créneau après-midi de 13h à 19h qui correspond idéalement à mon rythme de travail.",
+      "relevantExperience": "",
+      "availabilityNote": "Disponible du lundi au vendredi de 13h à 19h",
+      "additionalNote": "",
+      "candidateSnapshot": {
+        "firstName": "Camille",
+        "lastName": "Dufresne",
+        "email": "camille.d@example.com",
+        "chatterExperience": "Moins de 6 mois",
+        "languages": [
+          {
+            "language": "Français",
+            "level": "Bilingue / Natif"
+          },
+          {
+            "language": "Anglais",
+            "level": "Courant"
+          }
+        ],
+        "country": "France",
+        "city": "Lyon",
+        "availability": "Temps partiel (20-30h / semaine)"
+      },
+      "createdAt": "2026-10-08T13:12:04.055Z",
+      "updatedAt": "2026-10-08T13:12:11.580Z"
+    },
+    {
+      "id": "app_demo_01",
+      "jobId": "job_lifestyle_fr_01",
+      "candidateId": "usr_cand_camille",
+      "status": "SHORTLISTED",
+      "motivation": "Bonjour ! Je suis très enthousiaste à l'idée de collaborer avec cette créatrice. J'apprécie beaucoup son univers lifestyle et je sais me fondre parfaitement dans son style de communication. J'ai une orthographe irréprochable et je suis disponible immédiatement sur les créneaux de fin de journée.",
+      "relevantExperience": "3 mois de gestion de chat pour un créateur et 2 ans de relation client par écrit.",
+      "availabilityNote": "Disponible 20h/semaine dès aujourd’hui (17h - 22h).",
+      "additionalNote": "Connexion fibre optique et double écran pour une réactivité maximale.",
+      "candidateSnapshot": {
+        "firstName": "Camille",
+        "lastName": "Dufresne",
+        "email": "camille.d@example.com",
+        "chatterExperience": "Moins de 6 mois",
+        "languages": [
+          {
+            "language": "Français",
+            "level": "Bilingue / Natif"
+          },
+          {
+            "language": "Anglais",
+            "level": "Courant"
+          }
+        ],
+        "country": "France",
+        "city": "Lyon",
+        "availability": "Temps partiel (20-30h / semaine)"
+      },
+      "createdAt": "2026-09-21T10:15:00.000Z",
+      "updatedAt": "2026-09-22T08:00:00.000Z"
+    }
+  ],
+  "sessions": [
+    {
+      "token": "tok_3866e495568e3898c41645f51367f5ab0e8b76452bc7785c216afcb90d52b351",
+      "userId": "usr_admin_master",
+      "createdAt": "2026-10-08T13:11:45.728Z",
+      "expiresAt": "2026-10-15T13:11:45.728Z"
+    },
+    {
+      "token": "tok_fa903beb06509c01c56e358f6eba76f5b1c493ac54fb2433c32195e42200e57e",
+      "userId": "usr_cand_camille",
+      "createdAt": "2026-10-08T13:11:51.651Z",
+      "expiresAt": "2026-10-15T13:11:51.651Z"
+    }
+  ]
+}

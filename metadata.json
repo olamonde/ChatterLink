@@ -1,0 +1,6 @@
+{
+  "name": "ChatterLink - Opportunités Chatter pour Créatrices",
+  "description": "Plateforme professionnelle pour trouver des opportunités de chatter pour des créatrices de contenu, accessible aux débutants et profils expérimentés.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
