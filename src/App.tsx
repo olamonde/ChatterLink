@@ -117,17 +117,17 @@ const AppContent: React.FC = () => {
       }
       if (role !== 'ADMIN') {
         return (
-          <div className="max-w-md mx-auto my-20 p-8 bg-white border border-rose-200 rounded-xl text-center space-y-4">
+          <div className="max-w-md mx-auto my-20 p-8 bg-[#111111] border border-rose-900/40 rounded-2xl text-center space-y-4 shadow-xl">
             <ShieldAlert className="w-12 h-12 text-rose-500 mx-auto" />
-            <h2 className="text-lg font-bold text-slate-900">Accès Administrateur Refusé</h2>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Votre compte actuel ({user.email}) dispose du rôle <strong>CANDIDAT</strong>.
+            <h2 className="text-lg font-bold text-white font-display">Accès Administrateur Refusé</h2>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Votre compte actuel ({user.email}) dispose du rôle <strong className="text-slate-200">CANDIDAT</strong>.
               L'administration est exclusivement réservée au propriétaire de la plateforme.
             </p>
             <div className="pt-2 flex justify-center gap-3">
               <button
                 onClick={() => navigate('/dashboard')}
-                className="px-4 py-2 text-xs font-semibold text-white bg-slate-900 rounded-md"
+                className="px-5 py-2.5 text-xs font-semibold text-slate-900 bg-white hover:bg-slate-200 rounded-xl transition-all cursor-pointer"
               >
                 Mon espace candidat
               </button>
@@ -154,12 +154,12 @@ const AppContent: React.FC = () => {
 
     // 404 Not Found fallback
     return (
-      <div className="max-w-md mx-auto my-20 p-8 bg-white border border-slate-200 rounded-xl text-center space-y-4">
-        <h2 className="text-lg font-bold text-slate-900">Page non trouvée (404)</h2>
-        <p className="text-xs text-slate-600">L'adresse demandée n'existe pas sur ChatterLink.</p>
+      <div className="max-w-md mx-auto my-20 p-8 bg-[#111111] border border-white/10 rounded-2xl text-center space-y-4 shadow-xl">
+        <h2 className="text-lg font-bold text-white font-display">Page non trouvée (404)</h2>
+        <p className="text-xs text-slate-400">L'adresse demandée n'existe pas sur ChatterLink.</p>
         <button
           onClick={() => navigate('/')}
-          className="px-4 py-2 text-xs font-semibold text-white bg-slate-900 rounded-md"
+          className="px-5 py-2.5 text-xs font-semibold text-slate-900 bg-white hover:bg-slate-200 rounded-xl transition-all cursor-pointer"
         >
           Retour à l'accueil
         </button>
@@ -168,10 +168,22 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans">
-      <Navbar currentPath={currentPath} navigate={navigate} />
-      <main className="flex-1">{renderRoute()}</main>
-      <Footer navigate={navigate} />
+    <div className="min-h-screen flex flex-col bg-[#050505] text-slate-100 font-sans relative selection:bg-indigo-600 selection:text-white">
+      {/* Dark premium atmospheric depth layers */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+        {/* Deep subtle ambient glows */}
+        <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 w-[90vw] max-w-[1200px] h-[550px] bg-gradient-to-b from-indigo-950/20 via-violet-950/10 to-transparent blur-[140px] rounded-full" />
+        <div className="absolute top-[40%] -left-[10%] w-[45vw] max-w-[600px] h-[600px] bg-indigo-950/15 blur-[160px] rounded-full" />
+        <div className="absolute top-[70%] -right-[10%] w-[45vw] max-w-[600px] h-[600px] bg-slate-900/30 blur-[150px] rounded-full" />
+        {/* Subtle dark texture grid */}
+        <div className="absolute inset-0 bg-grid-subtle opacity-40" />
+      </div>
+
+      <div className="relative z-10 flex flex-col flex-1">
+        <Navbar currentPath={currentPath} navigate={navigate} />
+        <main className="flex-1">{renderRoute()}</main>
+        <Footer navigate={navigate} />
+      </div>
     </div>
   );
 };

@@ -12,7 +12,10 @@ import {
   Trash2,
   Save,
   ArrowRight,
+  Sparkles,
 } from 'lucide-react';
+import { Badge } from '../components/ui/Badge.js';
+import { Skeleton } from '../components/ui/Skeleton.js';
 
 interface CandidateProfilePageProps {
   navigate: (path: string) => void;
@@ -95,9 +98,9 @@ export const CandidateProfilePage: React.FC<CandidateProfilePageProps> = ({ navi
     field: 'language' | 'level',
     val: any
   ) => {
-    const updated = [...languages];
-    updated[idx] = { ...updated[idx], [field]: val };
-    setLanguages(updated);
+    const next = [...languages];
+    next[idx] = { ...next[idx], [field]: val };
+    setLanguages(next);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -109,7 +112,7 @@ export const CandidateProfilePage: React.FC<CandidateProfilePageProps> = ({ navi
     const skills = skillsString
       .split(',')
       .map((s) => s.trim())
-      .filter(Boolean);
+      .filter((s) => s.length > 0);
 
     try {
       const res = await fetch('/api/profile/me', {
@@ -154,51 +157,54 @@ export const CandidateProfilePage: React.FC<CandidateProfilePageProps> = ({ navi
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 animate-pulse space-y-6">
-        <div className="h-8 bg-slate-200 rounded w-1/3" />
-        <div className="h-64 bg-slate-100 rounded" />
+      <div className="max-w-4xl mx-auto px-4 py-16 animate-pulse space-y-6 bg-[#050505]">
+        <Skeleton className="h-8 w-1/3 rounded-lg" />
+        <Skeleton className="h-64 rounded-3xl" />
+        <Skeleton className="h-64 rounded-3xl" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-8 bg-[#050505] text-slate-100">
       {/* Header */}
-      <div className="border-b border-slate-200 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="border-b border-white/10 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+          <Badge variant="indigo" size="sm">
+            Mon Dossier
+          </Badge>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-display mt-1">
             Profil de chatter
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Ces informations sont automatiquement présentées lors de vos candidatures aux offres
-            publiées.
+          <p className="text-xs text-slate-400 mt-0.5">
+            Ces informations sont automatiquement présentées lors de vos candidatures aux offres.
           </p>
         </div>
         <button
           onClick={() => navigate('/dashboard')}
-          className="text-xs font-semibold text-slate-700 hover:text-slate-900 self-start sm:self-auto"
+          className="text-xs font-semibold text-slate-400 hover:text-white self-start sm:self-auto cursor-pointer"
         >
-          Retour au tableau de bord
+          ← Retour au tableau de bord
         </button>
       </div>
 
       {saveSuccess && (
-        <div className="p-4 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg text-xs flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span className="font-medium">Votre profil a été mis à jour avec succès !</span>
+        <div className="p-4 bg-emerald-950/80 text-emerald-300 border border-emerald-800/60 rounded-2xl text-xs flex items-center justify-between shadow-md">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span className="font-semibold">Votre profil a été enregistré avec succès !</span>
           </div>
           <button
             onClick={() => navigate('/jobs')}
-            className="underline font-semibold hover:text-emerald-950"
+            className="underline font-bold text-white hover:text-emerald-300 cursor-pointer"
           >
-            Découvrir les offres
+            Voir les offres ouvertes →
           </button>
         </div>
       )}
 
       {error && (
-        <div className="p-4 bg-rose-50 text-rose-800 border border-rose-200 rounded-lg text-xs flex items-center gap-2">
+        <div className="p-4 bg-rose-950/80 text-rose-300 border border-rose-800/60 rounded-2xl text-xs flex items-center gap-2.5">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -206,63 +212,96 @@ export const CandidateProfilePage: React.FC<CandidateProfilePageProps> = ({ navi
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Section 1: Informations Personnelles */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <User className="w-4 h-4 text-indigo-600" />
-            <span>Informations personnelles</span>
-          </h2>
+        <div className="bg-[#111111] border border-white/10 rounded-3xl p-6 sm:p-7 space-y-6 shadow-xl">
+          <div className="flex items-center gap-2.5 border-b border-white/10 pb-4">
+            <div className="w-8 h-8 rounded-xl bg-indigo-950/80 text-indigo-400 flex items-center justify-center border border-indigo-800/50">
+              <User className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-white">Informations personnelles</h2>
+              <p className="text-[11px] text-slate-400">Votre identité et coordonnées de contact</p>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Prénom</label>
+              <label className="block font-semibold text-slate-300 mb-1.5">Prénom</label>
               <input
                 type="text"
                 required
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="w-full p-2 border border-slate-200 rounded focus:outline-none focus:border-indigo-500 text-sm"
+                className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white focus:outline-none focus:border-indigo-500 text-xs"
               />
             </div>
-
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Nom</label>
+              <label className="block font-semibold text-slate-300 mb-1.5">Nom</label>
               <input
                 type="text"
                 required
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="w-full p-2 border border-slate-200 rounded focus:outline-none focus:border-indigo-500 text-sm"
+                className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white focus:outline-none focus:border-indigo-500 text-xs"
               />
             </div>
-
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Pays de résidence</label>
+              <label className="block font-semibold text-slate-300 mb-1.5">Pays de résidence</label>
               <input
                 type="text"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                placeholder="Ex: France, Belgique, Suisse, Canada..."
-                className="w-full p-2 border border-slate-200 rounded focus:outline-none focus:border-indigo-500"
+                className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white focus:outline-none focus:border-indigo-500 text-xs"
               />
             </div>
-
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Ville</label>
+              <label className="block font-semibold text-slate-300 mb-1.5">Ville</label>
               <input
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                placeholder="Ex: Lyon, Paris, Montréal..."
-                className="w-full p-2 border border-slate-200 rounded focus:outline-none focus:border-indigo-500"
+                placeholder="Ex: Paris, Lyon, Montréal, Nomade..."
+                className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white focus:outline-none focus:border-indigo-500 text-xs"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Section 2: Expérience de Chatter & Langues */}
+        <div className="bg-[#111111] border border-white/10 rounded-3xl p-6 sm:p-7 space-y-6 shadow-xl">
+          <div className="flex items-center gap-2.5 border-b border-white/10 pb-4">
+            <div className="w-8 h-8 rounded-xl bg-indigo-950/80 text-indigo-400 flex items-center justify-center border border-indigo-800/50">
+              <Briefcase className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-white">Expérience de chatter & Langues</h2>
+              <p className="text-[11px] text-slate-400">Niveau de maîtrise en messagerie</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label className="block font-semibold text-slate-300 mb-1.5">
+                Niveau d'expérience en chatter
+              </label>
+              <select
+                value={chatterExperience}
+                onChange={(e) => setChatterExperience(e.target.value as ExperienceLevel)}
+                className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white focus:outline-none focus:border-indigo-500 text-xs font-medium cursor-pointer"
+              >
+                <option value="Débutant">Débutant (0 expérience - Motivé)</option>
+                <option value="Moins de 6 mois">Moins de 6 mois d'expérience</option>
+                <option value="6 mois à 1 an">6 mois à 1 an d'expérience</option>
+                <option value="1 à 2 ans">1 à 2 ans d'expérience</option>
+                <option value="Plus de 2 ans">Plus de 2 ans (Confirmé / Pro)</option>
+              </select>
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Tranche d'âge</label>
+              <label className="block font-semibold text-slate-300 mb-1.5">Tranche d'âge</label>
               <select
                 value={ageRange}
                 onChange={(e) => setAgeRange(e.target.value)}
-                className="w-full p-2 border border-slate-200 rounded bg-white text-slate-800 focus:outline-none focus:border-indigo-500"
+                className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white focus:outline-none focus:border-indigo-500 text-xs font-medium cursor-pointer"
               >
                 <option value="18-24">18 - 24 ans</option>
                 <option value="25-34">25 - 34 ans</option>
@@ -270,196 +309,130 @@ export const CandidateProfilePage: React.FC<CandidateProfilePageProps> = ({ navi
                 <option value="45+">45 ans et plus</option>
               </select>
             </div>
-
-            <div>
-              <label className="block font-semibold text-slate-700 mb-1">Adresse email de contact</label>
-              <input
-                type="email"
-                disabled
-                value={user?.email || ''}
-                className="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-500 cursor-not-allowed"
-              />
-            </div>
           </div>
-        </div>
 
-        {/* Section 2: Expérience en Chatter */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <Briefcase className="w-4 h-4 text-indigo-600" />
-            <span>Expérience en chatter & Langues</span>
-          </h2>
+          {/* Languages list */}
+          <div className="space-y-3 pt-2 text-xs">
+            <div className="flex items-center justify-between">
+              <label className="font-semibold text-slate-300">Langues maîtrisées à l'écrit</label>
+              <button
+                type="button"
+                onClick={handleAddLanguage}
+                className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 inline-flex items-center gap-1 cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Ajouter une langue</span>
+              </button>
+            </div>
 
-          <div className="space-y-4 text-xs">
-            {/* The exact 5 levels specified in brief */}
-            <div>
-              <label className="block font-semibold text-slate-700 mb-2">
-                Expérience en chatter <span className="text-slate-400 font-normal">(Votre situation exacte)</span>
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
-                {(
-                  [
-                    'Débutant',
-                    'Moins de 6 mois',
-                    '6 mois à 1 an',
-                    '1 à 2 ans',
-                    'Plus de 2 ans',
-                  ] as ExperienceLevel[]
-                ).map((lvl) => (
+            {languages.map((l, idx) => (
+              <div key={idx} className="flex items-center gap-3 bg-[#181818] p-3 rounded-xl border border-white/10">
+                <input
+                  type="text"
+                  value={l.language}
+                  onChange={(e) => handleUpdateLanguage(idx, 'language', e.target.value)}
+                  placeholder="Ex: Français, Anglais, Espagnol..."
+                  className="flex-1 p-2 border border-white/10 rounded-lg bg-[#202020] text-white text-xs"
+                />
+                <select
+                  value={l.level}
+                  onChange={(e) => handleUpdateLanguage(idx, 'level', e.target.value)}
+                  className="p-2 border border-white/10 rounded-lg bg-[#202020] text-white text-xs cursor-pointer"
+                >
+                  <option value="Notions">Notions</option>
+                  <option value="Intermédiaire">Intermédiaire</option>
+                  <option value="Courant">Courant</option>
+                  <option value="Bilingue / Natif">Bilingue / Natif</option>
+                </select>
+                {languages.length > 1 && (
                   <button
                     type="button"
-                    key={lvl}
-                    onClick={() => setChatterExperience(lvl)}
-                    className={`p-3 text-center rounded border transition-colors ${
-                      chatterExperience === lvl
-                        ? 'bg-slate-900 text-white border-slate-900 font-semibold'
-                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                    }`}
+                    onClick={() => handleRemoveLanguage(idx)}
+                    className="p-1.5 text-slate-400 hover:text-rose-400 cursor-pointer"
                   >
-                    {lvl}
+                    <Trash2 className="w-4 h-4" />
                   </button>
-                ))}
+                )}
               </div>
-            </div>
-
-            {/* Languages Table */}
-            <div className="pt-2">
-              <div className="flex items-center justify-between mb-2">
-                <label className="font-semibold text-slate-700">Langues parlées & niveau</label>
-                <button
-                  type="button"
-                  onClick={handleAddLanguage}
-                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 inline-flex items-center gap-1"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Ajouter une langue</span>
-                </button>
-              </div>
-
-              <div className="space-y-2">
-                {languages.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={item.language}
-                      onChange={(e) => handleUpdateLanguage(idx, 'language', e.target.value)}
-                      placeholder="Langue (ex: Français, Anglais)"
-                      className="flex-1 p-2 border border-slate-200 rounded focus:outline-none focus:border-indigo-500"
-                    />
-                    <select
-                      value={item.level}
-                      onChange={(e) => handleUpdateLanguage(idx, 'level', e.target.value)}
-                      className="w-48 p-2 border border-slate-200 rounded bg-white focus:outline-none focus:border-indigo-500"
-                    >
-                      <option value="Débutant">Notions / Débutant</option>
-                      <option value="Intermédiaire">Intermédiaire (écrit fluide)</option>
-                      <option value="Courant">Courant</option>
-                      <option value="Bilingue / Natif">Bilingue / Langue maternelle</option>
-                    </select>
-                    {languages.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveLanguage(idx)}
-                        className="p-2 text-slate-400 hover:text-rose-600"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
         {/* Section 3: Disponibilités & Organisation */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <Clock className="w-4 h-4 text-indigo-600" />
-            <span>Disponibilités & Rythme de travail</span>
-          </h2>
+        <div className="bg-[#111111] border border-white/10 rounded-3xl p-6 sm:p-7 space-y-6 shadow-xl">
+          <div className="flex items-center gap-2.5 border-b border-white/10 pb-4">
+            <div className="w-8 h-8 rounded-xl bg-indigo-950/80 text-indigo-400 flex items-center justify-center border border-indigo-800/50">
+              <Clock className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-white">Disponibilités & Rythme</h2>
+              <p className="text-[11px] text-slate-400">Vos créneaux et fuseau horaire</p>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">
-                Volume d'heures disponible
+              <label className="block font-semibold text-slate-300 mb-1.5">
+                Volume d'heures souhaité
               </label>
               <select
                 value={availability}
                 onChange={(e) => setAvailability(e.target.value)}
-                className="w-full p-2 border border-slate-200 rounded bg-white text-slate-800 focus:outline-none focus:border-indigo-500"
+                className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white focus:outline-none focus:border-indigo-500 text-xs font-medium cursor-pointer"
               >
-                <option value="Temps partiel (10-15h / semaine)">Temps partiel (10-15h / semaine)</option>
-                <option value="Temps partiel (15-25h / semaine)">Temps partiel (15-25h / semaine)</option>
-                <option value="Temps plein (35h+ / semaine)">Temps plein (35h+ / semaine)</option>
-                <option value="Week-ends uniquement">Week-ends uniquement</option>
-                <option value="Horaires de nuit uniquement">Horaires de nuit uniquement</option>
-                <option value="Très flexible selon les besoins">Très flexible selon les besoins</option>
+                <option value="Temps partiel (10-15h)">Temps partiel (10-15h / semaine)</option>
+                <option value="Temps partiel (15-25h)">Temps partiel (15-25h / semaine)</option>
+                <option value="Temps plein (30-40h)">Temps plein (30-40h / semaine)</option>
+                <option value="Week-end uniquement">Week-end uniquement</option>
               </select>
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">Fuseau horaire</label>
-              <input
-                type="text"
-                value={timezone}
-                onChange={(e) => setTimezone(e.target.value)}
-                placeholder="Ex: UTC+1 (Paris), UTC-4 (Montréal)..."
-                className="w-full p-2 border border-slate-200 rounded focus:outline-none focus:border-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold text-slate-700 mb-1">
-                Créneaux horaires préférés
+              <label className="block font-semibold text-slate-300 mb-1.5">
+                Créneaux préférentiels
               </label>
-              <input
-                type="text"
+              <select
                 value={timeSlots}
                 onChange={(e) => setTimeSlots(e.target.value)}
-                placeholder="Ex: Soirée (18h-00h), Matinée, Après-midi, Nuit..."
-                className="w-full p-2 border border-slate-200 rounded focus:outline-none focus:border-indigo-500"
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold text-slate-700 mb-1">Type de travail</label>
-              <select
-                value={workType}
-                onChange={(e) => setWorkType(e.target.value)}
-                className="w-full p-2 border border-slate-200 rounded bg-white text-slate-800 focus:outline-none focus:border-indigo-500"
+                className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white focus:outline-none focus:border-indigo-500 text-xs font-medium cursor-pointer"
               >
-                <option value="Télétravail 100%">Télétravail 100%</option>
-                <option value="Horaires décalés">Horaires décalés</option>
-                <option value="Flexible">Flexible</option>
+                <option value="Soirée (18h-23h)">Soirée (18h-23h)</option>
+                <option value="Nuit (23h-04h)">Nuit (23h-04h)</option>
+                <option value="Journée (09h-17h)">Journée (09h-17h)</option>
+                <option value="Flexible / Variable">Flexible / Variable</option>
               </select>
             </div>
           </div>
         </div>
 
         {/* Section 4: Présentation & Compétences */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6">
-          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-            <Globe className="w-4 h-4 text-indigo-600" />
-            <span>Présentation & Compétences</span>
-          </h2>
+        <div className="bg-[#111111] border border-white/10 rounded-3xl p-6 sm:p-7 space-y-6 shadow-xl">
+          <div className="flex items-center gap-2.5 border-b border-white/10 pb-4">
+            <div className="w-8 h-8 rounded-xl bg-indigo-950/80 text-indigo-400 flex items-center justify-center border border-indigo-800/50">
+              <Globe className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-white">Présentation & Compétences</h2>
+              <p className="text-[11px] text-slate-400">Présentez vos atouts personnels</p>
+            </div>
+          </div>
 
           <div className="space-y-4 text-xs">
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">
-                Présentation personnelle (bio)
+              <label className="block font-semibold text-slate-300 mb-1.5">
+                Présentation personnelle (Bio)
               </label>
               <textarea
                 rows={4}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Présentez votre style de communication, votre rigueur et pourquoi vous souhaitez chatter pour des créatrices..."
-                className="w-full p-2.5 border border-slate-200 rounded focus:outline-none focus:border-indigo-500 text-xs leading-relaxed"
+                className="w-full p-3 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 text-xs leading-relaxed bg-[#181818] text-white placeholder-slate-500"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">
+              <label className="block font-semibold text-slate-300 mb-1.5">
                 Compétences clés <span className="text-slate-400 font-normal">(séparées par des virgules)</span>
               </label>
               <input
@@ -467,31 +440,31 @@ export const CandidateProfilePage: React.FC<CandidateProfilePageProps> = ({ navi
                 value={skillsString}
                 onChange={(e) => setSkillsString(e.target.value)}
                 placeholder="Ex: Orthographe irréprochable, Vente persuasive, Empathie, Gestion des objections, Discrétion..."
-                className="w-full p-2 border border-slate-200 rounded focus:outline-none focus:border-indigo-500"
+                className="w-full p-2.5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 text-xs bg-[#181818] text-white placeholder-slate-500"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 mb-1">
-                Expérience professionnelle passée (détail)
+              <label className="block font-semibold text-slate-300 mb-1.5">
+                Expérience professionnelle passée
               </label>
               <textarea
                 rows={3}
                 value={workExperience}
                 onChange={(e) => setWorkExperience(e.target.value)}
                 placeholder="Parcours précédent (relation client, vente, réseaux sociaux, chatter pour créateurs...)"
-                className="w-full p-2.5 border border-slate-200 rounded focus:outline-none focus:border-indigo-500 text-xs leading-relaxed"
+                className="w-full p-3 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 text-xs leading-relaxed bg-[#181818] text-white placeholder-slate-500"
               />
             </div>
           </div>
         </div>
 
-        {/* Save Bar */}
+        {/* Action Bar */}
         <div className="flex items-center justify-between pt-4">
           <button
             type="button"
             onClick={() => navigate('/dashboard')}
-            className="text-xs font-medium text-slate-600 hover:text-slate-900"
+            className="text-xs font-semibold text-slate-400 hover:text-white cursor-pointer"
           >
             Annuler
           </button>
@@ -499,10 +472,10 @@ export const CandidateProfilePage: React.FC<CandidateProfilePageProps> = ({ navi
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors disabled:opacity-50 inline-flex items-center gap-2 shadow-xs"
+            className="px-7 py-3 text-xs font-bold text-slate-900 bg-white hover:bg-slate-200 rounded-xl transition-all disabled:opacity-50 inline-flex items-center gap-2 shadow-md hover:shadow-lg cursor-pointer"
           >
-            <Save className="w-3.5 h-3.5" />
-            <span>{saving ? 'Enregistrement...' : 'Enregistrer mon profil'}</span>
+            <Save className="w-4 h-4" />
+            <span>{saving ? 'Enregistrement en cours...' : 'Enregistrer mon profil'}</span>
           </button>
         </div>
       </form>

@@ -12,7 +12,13 @@ import {
   AlertCircle,
   FileText,
   ChevronRight,
+  Send,
+  CheckCheck,
 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ApplicationStatusBadge, Badge } from '../components/ui/Badge.js';
+import { StatCard } from '../components/ui/StatCard.js';
+import { EmptyState } from '../components/ui/EmptyState.js';
 
 interface CandidateDashboardPageProps {
   navigate: (path: string) => void;
@@ -35,7 +41,6 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({ 
   useEffect(() => {
     if (!token) return;
 
-    // Fetch dashboard overview
     fetch('/api/candidate/dashboard', {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -47,7 +52,6 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({ 
       })
       .catch((err) => console.error(err));
 
-    // Fetch full application history
     fetch('/api/candidate/applications', {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -59,55 +63,13 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({ 
       .finally(() => setIsLoading(false));
   }, [token]);
 
-  const renderStatusBadge = (status: string) => {
-    switch (status) {
-      case 'RECEIVED':
-        return (
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded">
-            <span className="w-1.5 h-1.5 rounded-full bg-slate-500" />
-            <span>Envoyée</span>
-          </span>
-        );
-      case 'REVIEWING':
-        return (
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-            <span>En cours d'examen</span>
-          </span>
-        );
-      case 'SHORTLISTED':
-        return (
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-800 bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-600" />
-            <span>Présélectionnée</span>
-          </span>
-        );
-      case 'ACCEPTED':
-        return (
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Acceptée</span>
-          </span>
-        );
-      case 'REJECTED':
-        return (
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-rose-700 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded">
-            <XCircle className="w-3.5 h-3.5 text-rose-500" />
-            <span>Refusée</span>
-          </span>
-        );
-      default:
-        return <span className="text-xs text-slate-500">{status}</span>;
-    }
-  };
-
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-16 animate-pulse space-y-6">
-        <div className="h-8 bg-slate-200 rounded w-1/4" />
-        <div className="grid grid-cols-4 gap-4">
+      <div className="max-w-7xl mx-auto px-4 py-16 animate-pulse space-y-6 bg-[#050505]">
+        <div className="h-8 bg-[#1f1f1f] rounded w-1/4" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-24 bg-slate-100 rounded" />
+            <div key={i} className="h-28 bg-[#181818] rounded-2xl border border-white/5" />
           ))}
         </div>
       </div>
@@ -115,92 +77,111 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({ 
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-10 bg-[#050505] text-slate-100">
       {/* Welcome Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+        <div className="space-y-1">
+          <Badge variant="indigo" size="sm">
+            Espace Candidat
+          </Badge>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-display">
             Bonjour, {user?.firstName} 👋
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Suivez l'avancement de vos candidatures et découvrez les offres adaptées à votre profil.
+          <p className="text-xs sm:text-sm text-slate-400">
+            Suivez l'état de vos candidatures et découvrez les missions sélectionnées pour vous.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/dashboard/profile')}
-            className="px-3.5 py-2 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors inline-flex items-center gap-1.5"
+            className="px-4 py-2.5 text-xs font-semibold text-slate-200 bg-[#161616] border border-white/10 rounded-xl hover:bg-[#202020] transition-all inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
           >
-            <User className="w-3.5 h-3.5 text-slate-500" />
-            <span>Modifier mon profil</span>
+            <User className="w-3.5 h-3.5 text-slate-400" />
+            <span>Mon profil</span>
           </button>
           <button
             onClick={() => navigate('/jobs')}
-            className="px-4 py-2 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-md transition-colors inline-flex items-center gap-1.5"
+            className="px-5 py-2.5 text-xs font-bold text-slate-900 bg-white hover:bg-slate-200 rounded-xl transition-all inline-flex items-center gap-1.5 shadow-md cursor-pointer"
           >
             <Briefcase className="w-3.5 h-3.5" />
-            <span>Trouver une offre</span>
+            <span>Explorer les offres</span>
           </button>
         </div>
       </div>
 
       {/* Profile completion notice */}
       {!profileCompleted && (
-        <div className="bg-amber-50/90 border border-amber-200 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-amber-900">
-          <div className="flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-r from-amber-950/40 to-amber-900/20 border border-amber-800/40 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs shadow-lg"
+        >
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+              <Sparkles className="w-4 h-4" />
+            </div>
             <div>
-              <span className="font-semibold">Complétez votre profil de chatter :</span> Renseignez
-              vos compétences et votre bio pour valoriser vos candidatures auprès des créatrices.
+              <span className="font-bold text-white block text-sm">
+                Optimisez vos chances de sélection
+              </span>
+              <p className="text-amber-200/80 text-xs mt-0.5 leading-relaxed">
+                Complétez votre bio et vos compétences clés pour valoriser immédiatement votre
+                profil auprès de l'administrateur.
+              </p>
             </div>
           </div>
           <button
             onClick={() => navigate('/dashboard/profile')}
-            className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded text-xs shrink-0 self-start sm:self-auto transition-colors"
+            className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shrink-0 self-start sm:self-auto transition-all shadow-md cursor-pointer"
           >
-            Compléter maintenant
+            Compléter mon profil
           </button>
-        </div>
+        </motion.div>
       )}
 
-      {/* 4 Quantitative Metric Cards (Zero-pill discipline, tabular nums) */}
+      {/* 4 Animated Modern Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-1">
-          <div className="text-xs text-slate-500">Total candidatures</div>
-          <div className="text-2xl font-bold text-slate-900 tabular-nums">{stats.total}</div>
-          <div className="text-[11px] text-slate-400">Toutes offres confondues</div>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-1">
-          <div className="text-xs text-slate-500">En cours d'examen</div>
-          <div className="text-2xl font-bold text-amber-600 tabular-nums">{stats.pending}</div>
-          <div className="text-[11px] text-slate-400">Étudiées par l'administrateur</div>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-1">
-          <div className="text-xs text-slate-500">Présélectionnées</div>
-          <div className="text-2xl font-bold text-indigo-600 tabular-nums">{stats.shortlisted}</div>
-          <div className="text-[11px] text-slate-400">Dossiers retenus</div>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-1">
-          <div className="text-xs text-slate-500">Acceptées</div>
-          <div className="text-2xl font-bold text-emerald-600 tabular-nums">{stats.accepted}</div>
-          <div className="text-[11px] text-slate-400">Missions confirmées</div>
-        </div>
+        <StatCard
+          label="Candidatures envoyées"
+          value={stats.total}
+          sublabel="Toutes offres confondues"
+          icon={Send}
+          variant="slate"
+        />
+        <StatCard
+          label="En cours d'examen"
+          value={stats.pending}
+          sublabel="En étude par l'admin"
+          icon={Clock}
+          variant="amber"
+        />
+        <StatCard
+          label="Présélectionnées"
+          value={stats.shortlisted}
+          sublabel="Dossiers retenus"
+          icon={Sparkles}
+          variant="indigo"
+        />
+        <StatCard
+          label="Missions acceptées"
+          value={stats.accepted}
+          sublabel="Candidatures validées"
+          icon={CheckCircle2}
+          variant="emerald"
+        />
       </div>
 
-      {/* Section: Mes Candidatures */}
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
-        <div className="p-6 border-b border-slate-200 flex items-center justify-between">
+      {/* Section: Mes Candidatures (Dark Premium Table) */}
+      <div className="bg-[#111111] border border-white/10 rounded-3xl overflow-hidden shadow-xl space-y-0">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-slate-900">Mes candidatures</h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Suivi en temps réel de vos démarches auprès de la plateforme
+            <h2 className="text-base font-bold text-white font-display">Mes candidatures</h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Historique et suivi en temps réel de vos démarches
             </p>
           </div>
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono font-medium text-slate-400">
             {applications.length} candidature(s)
           </span>
         </div>
@@ -208,16 +189,16 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({ 
         {applications.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 uppercase tracking-wider font-semibold">
+              <thead className="bg-[#181818] text-slate-400 border-b border-white/5 uppercase tracking-wider font-semibold">
                 <tr>
-                  <th className="py-3 px-6">Offre de chatter</th>
-                  <th className="py-3 px-6">Date d'envoi</th>
-                  <th className="py-3 px-6">Rémunération</th>
-                  <th className="py-3 px-6">Statut actuel</th>
-                  <th className="py-3 px-6 text-right">Action</th>
+                  <th className="py-3.5 px-6">Offre ciblée</th>
+                  <th className="py-3.5 px-6">Date de soumission</th>
+                  <th className="py-3.5 px-6">Rémunération</th>
+                  <th className="py-3.5 px-6">Statut actuel</th>
+                  <th className="py-3.5 px-6 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-700">
+              <tbody className="divide-y divide-white/5 text-slate-300">
                 {applications.map((app) => {
                   const dateStr = new Date(app.createdAt).toLocaleDateString('fr-FR', {
                     day: 'numeric',
@@ -226,21 +207,32 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({ 
                   });
 
                   return (
-                    <tr key={app.id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="py-4 px-6 font-medium text-slate-900 max-w-xs truncate">
-                        {app.job?.title || 'Offre'}
+                    <tr key={app.id} className="hover:bg-white/5 transition-colors">
+                      <td className="py-4 px-6 max-w-xs">
+                        <div className="font-bold text-white line-clamp-1">
+                          {app.job?.title || 'Offre'}
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5">
+                          {app.job?.workType} · {app.job?.workingHours}
+                        </div>
                       </td>
-                      <td className="py-4 px-6 tabular-nums text-slate-500">{dateStr}</td>
-                      <td className="py-4 px-6 font-medium text-slate-800">
+
+                      <td className="py-4 px-6 tabular-nums text-slate-400">{dateStr}</td>
+
+                      <td className="py-4 px-6 font-semibold text-white">
                         {app.job?.compensation || 'Non spécifiée'}
                       </td>
-                      <td className="py-4 px-6">{renderStatusBadge(app.status)}</td>
+
+                      <td className="py-4 px-6">
+                        <ApplicationStatusBadge status={app.status} size="md" />
+                      </td>
+
                       <td className="py-4 px-6 text-right">
                         <button
                           onClick={() => navigate(`/jobs/${app.jobId}`)}
-                          className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 inline-flex items-center gap-1"
+                          className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 inline-flex items-center gap-1 cursor-pointer"
                         >
-                          <span>Voir l'offre</span>
+                          <span>Voir détails</span>
                           <ChevronRight className="w-3.5 h-3.5" />
                         </button>
                       </td>
@@ -251,43 +243,33 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({ 
             </table>
           </div>
         ) : (
-          <div className="p-12 text-center space-y-4">
-            <div className="w-12 h-12 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto">
-              <FileText className="w-6 h-6" />
-            </div>
-            <div>
-              <div className="text-sm font-semibold text-slate-800">
-                Vous n'avez pas encore postulé
-              </div>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
-                Explorez les opportunités actuellement ouvertes et envoyez votre première
-                candidature en quelques clics.
-              </p>
-            </div>
-            <button
-              onClick={() => navigate('/jobs')}
-              className="px-4 py-2 text-xs font-semibold text-white bg-slate-900 rounded-md hover:bg-slate-800 transition-colors inline-flex items-center gap-1.5"
-            >
-              <span>Découvrir les opportunités</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+          <div className="p-12">
+            <EmptyState
+              icon={FileText}
+              title="Aucune candidature en cours"
+              description="Vous n'avez pas encore postulé à une offre. Consultez les missions publiées et envoyez votre première candidature."
+              actionLabel="Découvrir les offres"
+              onAction={() => navigate('/jobs')}
+            />
           </div>
         )}
       </div>
 
-      {/* Section: Opportunités Recommandées */}
+      {/* Section: Offres Recommandées */}
       {recommendedJobs.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-600" />
-              <span>Opportunités recommandées pour vous</span>
-            </h2>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-indigo-400" />
+              <h2 className="text-base font-bold text-white font-display">
+                Missions recommandées pour votre profil
+              </h2>
+            </div>
             <button
               onClick={() => navigate('/jobs')}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800"
+              className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer"
             >
-              Voir tout
+              Voir tout →
             </button>
           </div>
 
@@ -295,34 +277,31 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({ 
             {recommendedJobs.map((job) => (
               <div
                 key={job.id}
-                className="bg-white border border-slate-200 rounded-lg p-5 flex flex-col justify-between hover:border-slate-300 transition-colors"
+                className="bg-[#111111] border border-white/10 rounded-2xl p-5 flex flex-col justify-between hover:border-indigo-500/40 hover:shadow-xl transition-all group"
               >
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-[11px] text-slate-500">
-                    <span>{job.workType}</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{job.requiredExperience}</span>
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2 text-xs">
                     {job.beginnerFriendly && (
-                      <>
-                        <span aria-hidden="true">·</span>
-                        <span className="text-emerald-600 font-medium">Débutant</span>
-                      </>
+                      <Badge variant="success" size="sm" dot>
+                        Débutant
+                      </Badge>
                     )}
+                    <Badge variant="neutral" size="sm">
+                      {job.workType}
+                    </Badge>
                   </div>
-                  <h3 className="text-sm font-semibold text-slate-900 line-clamp-2">
+                  <h3 className="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors line-clamp-2">
                     {job.title}
                   </h3>
-                  <div className="text-xs font-semibold text-slate-800 pt-1">
-                    {job.compensation}
-                  </div>
+                  <div className="text-xs font-bold text-white pt-1">{job.compensation}</div>
                 </div>
 
-                <div className="pt-4 mt-3 border-t border-slate-100">
+                <div className="pt-4 mt-3 border-t border-white/5">
                   <button
                     onClick={() => navigate(`/jobs/${job.id}`)}
-                    className="w-full py-1.5 px-3 text-xs font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 rounded text-center border border-slate-200"
+                    className="w-full py-2 px-3 text-xs font-semibold text-slate-200 bg-[#181818] hover:bg-white hover:text-slate-900 rounded-xl text-center border border-white/10 transition-all cursor-pointer"
                   >
-                    Voir l'offre
+                    Consulter l'offre
                   </button>
                 </div>
               </div>

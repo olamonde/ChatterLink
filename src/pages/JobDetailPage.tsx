@@ -12,7 +12,13 @@ import {
   Send,
   X,
   FileCheck,
+  Sparkles,
+  Lock,
+  ChevronRight,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Badge } from '../components/ui/Badge.js';
+import { Skeleton } from '../components/ui/Skeleton.js';
 
 interface JobDetailPageProps {
   jobId: string;
@@ -65,7 +71,6 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ jobId, navigate })
     fetchJob();
   }, [jobId, token]);
 
-  // If candidate opens modal, prefill info from their profile
   const handleOpenApplyModal = async () => {
     if (!user) {
       navigate('/login');
@@ -143,27 +148,36 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ jobId, navigate })
 
   if (isLoading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 animate-pulse space-y-6">
-        <div className="h-6 bg-slate-200 rounded w-1/4" />
-        <div className="h-10 bg-slate-200 rounded w-3/4" />
-        <div className="h-40 bg-slate-100 rounded" />
+      <div className="max-w-6xl mx-auto px-4 py-16 animate-pulse space-y-6 bg-[#050505]">
+        <Skeleton className="h-4 w-32 rounded" />
+        <Skeleton className="h-10 w-2/3 rounded-lg" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-4">
+          <div className="lg:col-span-2 space-y-4">
+            <Skeleton className="h-40 rounded-xl" />
+            <Skeleton className="h-40 rounded-xl" />
+          </div>
+          <Skeleton className="h-64 rounded-xl" />
+        </div>
       </div>
     );
   }
 
   if (error || !job) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-16 text-center space-y-4">
-        <div className="text-rose-600 font-semibold text-lg">Offre non disponible</div>
-        <p className="text-slate-600 text-sm">
-          Cette offre n'existe pas ou n'est plus accessible au public.
+      <div className="max-w-xl mx-auto px-4 py-20 text-center space-y-4 bg-[#050505]">
+        <div className="w-14 h-14 bg-rose-950/80 text-rose-400 rounded-2xl flex items-center justify-center mx-auto border border-rose-850/50">
+          <AlertCircle className="w-7 h-7" />
+        </div>
+        <h2 className="text-xl font-bold text-white font-display">Offre non disponible</h2>
+        <p className="text-xs text-slate-400 leading-relaxed">
+          Cette opportunité n'existe pas ou a été archivée par l'administrateur.
         </p>
         <button
           onClick={() => navigate('/jobs')}
-          className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-slate-900 rounded-md"
+          className="inline-flex items-center gap-2 px-6 py-2.5 text-xs font-bold text-slate-900 bg-white rounded-xl hover:bg-slate-200 transition-all cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Retour aux opportunités</span>
+          <span>Retour aux offres</span>
         </button>
       </div>
     );
@@ -178,329 +192,357 @@ export const JobDetailPage: React.FC<JobDetailPageProps> = ({ jobId, navigate })
   const isClosed = job.status === 'CLOSED';
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-8 bg-[#050505] text-slate-100">
       {/* Back button */}
       <button
         onClick={() => navigate('/jobs')}
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors group cursor-pointer"
       >
-        <ArrowLeft className="w-3.5 h-3.5" />
+        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
         <span>Toutes les opportunités</span>
       </button>
 
-      {/* Main Job Card */}
-      <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-8 shadow-xs">
-        {/* Header Block */}
-        <div className="space-y-4 border-b border-slate-100 pb-6">
-          <div className="flex items-center flex-wrap gap-2 text-xs text-slate-500">
-            <span>{job.workType}</span>
-            <span aria-hidden="true">·</span>
-            <span>Langues : {job.languages.join(', ')}</span>
-            <span aria-hidden="true">·</span>
-            <span>Niveau requis : {job.requiredExperience}</span>
-            {job.beginnerFriendly && (
-              <>
-                <span aria-hidden="true">·</span>
-                <span className="text-emerald-600 font-medium">Débutant accepté</span>
-              </>
-            )}
-            <span aria-hidden="true">·</span>
-            <span>Publiée le {dateStr}</span>
-          </div>
-
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-            {job.title}
-          </h1>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-              <div className="text-[11px] text-slate-400">Rémunération</div>
-              <div className="text-sm font-bold text-slate-900 mt-0.5">{job.compensation}</div>
-            </div>
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-              <div className="text-[11px] text-slate-400">Horaires et créneaux</div>
-              <div className="text-sm font-semibold text-slate-900 mt-0.5">{job.workingHours}</div>
-            </div>
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-              <div className="text-[11px] text-slate-400">Disponibilité demandée</div>
-              <div className="text-sm font-semibold text-slate-900 mt-0.5">{job.availability}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Callout Bar */}
-        <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <div className="text-xs font-semibold text-slate-900">
-              Postuler à cette opportunité
-            </div>
-            <div className="text-[11px] text-slate-500">
-              {isClosed
-                ? 'Les candidatures pour cette offre sont désormais clôturées.'
-                : userApplication
-                ? 'Vous avez déjà soumis votre candidature pour ce poste.'
-                : 'Votre profil candidat sera transmis directement à l’administrateur.'}
-            </div>
-          </div>
-
-          <div>
-            {isClosed ? (
-              <span className="px-4 py-2 text-xs font-medium text-slate-500 bg-slate-200 rounded-md cursor-not-allowed">
-                Offre fermée
+      {/* Main 2-column layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left column: Comprehensive Job Brief */}
+        <div className="lg:col-span-8 space-y-8">
+          {/* Header Card */}
+          <div className="bg-[#111111] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-5 shadow-xl">
+            <div className="flex items-center flex-wrap gap-2 text-xs">
+              {job.beginnerFriendly && (
+                <Badge variant="success" size="sm" dot>
+                  Débutant accepté
+                </Badge>
+              )}
+              <Badge variant="neutral" size="sm">
+                {job.workType}
+              </Badge>
+              <Badge variant="indigo" size="sm">
+                {job.languages.join(', ')}
+              </Badge>
+              <span className="text-[11px] text-slate-400">
+                Publiée le {dateStr}
               </span>
-            ) : userApplication ? (
-              <div className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-emerald-800 bg-emerald-100/70 border border-emerald-300 rounded-md">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Candidature envoyée ({userApplication.status})</span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-display">
+              {job.title}
+            </h1>
+
+            {/* Quick Metrics Bar */}
+            <div className="grid grid-cols-3 gap-3 pt-2 text-xs">
+              <div className="bg-[#181818] p-3 rounded-xl border border-white/5">
+                <span className="text-[11px] text-slate-400 block font-medium">Expérience</span>
+                <span className="font-semibold text-white mt-0.5 block">
+                  {job.requiredExperience}
+                </span>
               </div>
-            ) : user ? (
-              <button
-                onClick={handleOpenApplyModal}
-                className="px-5 py-2.5 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors inline-flex items-center gap-2"
-              >
-                <span>Postuler maintenant</span>
-                <Send className="w-3.5 h-3.5" />
-              </button>
-            ) : (
-              <button
-                onClick={() => navigate('/login')}
-                className="px-5 py-2.5 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors"
-              >
-                Se connecter pour postuler
-              </button>
+              <div className="bg-[#181818] p-3 rounded-xl border border-white/5">
+                <span className="text-[11px] text-slate-400 block font-medium">Créneaux</span>
+                <span className="font-semibold text-white mt-0.5 block truncate">
+                  {job.workingHours}
+                </span>
+              </div>
+              <div className="bg-[#181818] p-3 rounded-xl border border-white/5">
+                <span className="text-[11px] text-slate-400 block font-medium">Disponibilité</span>
+                <span className="font-semibold text-white mt-0.5 block truncate">
+                  {job.availability}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Description & Context */}
+          <div className="bg-[#111111] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+            <div>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                Contexte de la collaboration
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                {job.description}
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                Missions confiées au chatter
+              </h2>
+              <div className="bg-[#181818] p-4 rounded-xl border border-white/10 text-xs sm:text-sm text-slate-200 font-mono leading-relaxed whitespace-pre-line">
+                {job.missions}
+              </div>
+            </div>
+
+            {job.requiredProfile && (
+              <div>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                  Profil recherché
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  {job.requiredProfile}
+                </p>
+              </div>
+            )}
+
+            {job.requiredSkills && job.requiredSkills.length > 0 && (
+              <div>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                  Compétences clés
+                </h2>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {job.requiredSkills.map((sk, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 bg-[#1a1a1a] text-slate-200 text-xs font-medium rounded-lg border border-white/10"
+                    >
+                      {sk}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {job.additionalInfo && (
+              <div>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
+                  Informations complémentaires
+                </h2>
+                <p className="text-xs text-indigo-300 leading-relaxed bg-indigo-950/40 p-3.5 rounded-xl border border-indigo-800/40">
+                  {job.additionalInfo}
+                </p>
+              </div>
             )}
           </div>
+
+          {/* Security & Confidentiality reminder */}
+          <div className="bg-[#141414] text-white rounded-3xl border border-white/10 p-6 text-xs space-y-2 shadow-xl">
+            <div className="flex items-center gap-2 text-indigo-400 font-semibold">
+              <Lock className="w-4 h-4" />
+              <span>Protocole de confidentialité garanti</span>
+            </div>
+            <p className="text-slate-300 leading-relaxed text-[11px]">
+              L'anonymat et les identifiants privés de la créatrice sont préservés. Seul
+              l'administrateur ChatterLink effectue la sélection et la mise en relation sécurisée.
+            </p>
+          </div>
         </div>
 
-        {/* Detailed Description */}
-        <div className="space-y-6 text-sm text-slate-700">
-          <div>
-            <h2 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">
-              Contexte de la mission
-            </h2>
-            <p className="leading-relaxed whitespace-pre-line text-slate-600">{job.description}</p>
+        {/* Right column: Sticky Application Action Sidebar */}
+        <div className="lg:col-span-4 sticky top-24 space-y-4">
+          <div className="bg-[#111111] border border-white/10 rounded-3xl p-6 space-y-5 shadow-xl">
+            <div>
+              <span className="text-[11px] text-slate-400 font-medium block">
+                Rémunération proposée
+              </span>
+              <span className="text-lg sm:text-xl font-bold text-white mt-1 block font-display">
+                {job.compensation}
+              </span>
+            </div>
+
+            <div className="space-y-3 pt-4 border-t border-white/10 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Postes ouverts</span>
+                <span className="font-semibold text-white">{job.openingsCount}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Type de contrat</span>
+                <span className="font-semibold text-white">{job.workType}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Langues</span>
+                <span className="font-semibold text-white">{job.languages.join(', ')}</span>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-white/10">
+              {isClosed ? (
+                <div className="w-full py-3 px-4 text-xs font-semibold text-slate-500 bg-[#181818] rounded-xl text-center cursor-not-allowed">
+                  Offre fermée aux candidatures
+                </div>
+              ) : userApplication ? (
+                <div className="space-y-2">
+                  <div className="w-full py-3 px-4 text-xs font-semibold text-emerald-300 bg-emerald-950/70 border border-emerald-800/60 rounded-xl text-center flex items-center justify-center gap-1.5 shadow-xs">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <span>Vous avez déjà postulé</span>
+                  </div>
+                  <button
+                    onClick={() => navigate('/dashboard')}
+                    className="w-full text-center text-xs text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer"
+                  >
+                    Voir le statut dans mon tableau de bord
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleOpenApplyModal}
+                  className="w-full py-3.5 px-4 text-xs font-bold text-slate-900 bg-white hover:bg-slate-200 rounded-xl transition-all text-center inline-flex items-center justify-center gap-2 group cursor-pointer shadow-lg hover:shadow-indigo-500/10"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Postuler à cette offre</span>
+                </button>
+              )}
+            </div>
           </div>
-
-          <div>
-            <h2 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">
-              Missions confiées au chatter
-            </h2>
-            <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 whitespace-pre-line text-slate-700 text-xs leading-relaxed font-mono">
-              {job.missions}
-            </div>
-          </div>
-
-          {job.requiredProfile && (
-            <div>
-              <h2 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">
-                Profil recherché
-              </h2>
-              <p className="leading-relaxed text-slate-600">{job.requiredProfile}</p>
-            </div>
-          )}
-
-          {job.requiredSkills && job.requiredSkills.length > 0 && (
-            <div>
-              <h2 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">
-                Compétences requises
-              </h2>
-              <ul className="space-y-1.5 text-xs text-slate-700">
-                {job.requiredSkills.map((sk, idx) => (
-                  <li key={idx} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-                    <span>{sk}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {job.additionalInfo && (
-            <div>
-              <h2 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">
-                Informations complémentaires
-              </h2>
-              <p className="text-xs text-slate-600 leading-relaxed">{job.additionalInfo}</p>
-            </div>
-          )}
-        </div>
-
-        {/* Confidentiality Reminder */}
-        <div className="pt-6 border-t border-slate-100 text-xs text-slate-500 flex items-start gap-2.5">
-          <Shield className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-          <p>
-            Les informations privées et comptes personnels des créatrices sont strictement
-            protégés et gérés en privé par l'administrateur ChatterLink. Aucun contact direct ne
-            doit être sollicité en dehors du protocole de la plateforme.
-          </p>
         </div>
       </div>
 
-      {/* Apply Modal */}
-      {applyModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <div>
-                <h3 className="text-lg font-bold text-slate-900">Postuler à cette opportunité</h3>
-                <div className="text-xs text-slate-500 mt-0.5">{job.title}</div>
+      {/* Application Modal with Motion (Dark Premium) */}
+      <AnimatePresence>
+        {applyModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="bg-[#111111] rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 border border-white/10 text-white"
+            >
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-white font-display">Postuler à cette opportunité</h3>
+                  <div className="text-xs text-slate-400 mt-0.5 line-clamp-1">{job.title}</div>
+                </div>
+                <button
+                  onClick={() => setApplyModalOpen(false)}
+                  className="p-1 text-slate-400 hover:text-white rounded-lg cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <button
-                onClick={() => setApplyModalOpen(false)}
-                className="text-slate-400 hover:text-slate-700"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
 
-            {submitSuccess ? (
-              <div className="py-8 text-center space-y-4">
-                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-slate-900">
-                  Candidature transmise avec succès !
-                </h4>
-                <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                  Votre dossier a bien été enregistré. L'administrateur étudiera votre profil et
-                  mettra à jour le statut dans votre tableau de bord.
-                </p>
-                <div className="flex justify-center gap-3 pt-2">
-                  <button
-                    onClick={() => {
-                      setApplyModalOpen(false);
-                      navigate('/dashboard');
-                    }}
-                    className="px-4 py-2 text-xs font-semibold text-white bg-slate-900 rounded-md"
-                  >
-                    Voir mes candidatures
-                  </button>
-                  <button
-                    onClick={() => setApplyModalOpen(false)}
-                    className="px-4 py-2 text-xs font-medium text-slate-700 border border-slate-300 rounded-md"
-                  >
-                    Fermer
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleApplySubmit} className="space-y-4 text-xs">
-                {/* Profile snapshot notice */}
-                <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-1">
-                  <div className="font-semibold text-slate-800">
-                    Informations jointes automatiquement depuis votre profil :
+              {submitSuccess ? (
+                <div className="py-8 text-center space-y-4">
+                  <div className="w-14 h-14 bg-emerald-950/80 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto shadow-md border border-emerald-800/50">
+                    <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <div className="text-slate-600 flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
-                    <span>
-                      Candidat : <strong>{user?.firstName} {user?.lastName}</strong>
-                    </span>
-                    <span>
-                      Expérience :{' '}
-                      <strong>{candidateProfile?.chatterExperience || 'Débutant'}</strong>
-                    </span>
-                    <span>
-                      Langues :{' '}
-                      <strong>
-                        {candidateProfile?.languages.map((l) => l.language).join(', ') || 'Français'}
-                      </strong>
-                    </span>
-                    <span>
-                      Localisation :{' '}
-                      <strong>
-                        {candidateProfile?.city || 'Non renseignée'}, {candidateProfile?.country || 'France'}
-                      </strong>
-                    </span>
+                  <h4 className="text-lg font-bold text-white font-display">
+                    Candidature transmise avec succès !
+                  </h4>
+                  <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+                    Votre profil a bien été enregistré pour cette offre. L'administrateur étudiera
+                    vos éléments et mettra à jour votre statut dans votre espace candidat.
+                  </p>
+                  <div className="flex justify-center gap-3 pt-2">
+                    <button
+                      onClick={() => {
+                        setApplyModalOpen(false);
+                        navigate('/dashboard');
+                      }}
+                      className="px-5 py-2.5 text-xs font-bold text-slate-900 bg-white hover:bg-slate-200 rounded-xl cursor-pointer"
+                    >
+                      Suivre dans mon tableau de bord
+                    </button>
+                    <button
+                      onClick={() => setApplyModalOpen(false)}
+                      className="px-4 py-2.5 text-xs font-medium text-slate-300 border border-white/10 rounded-xl hover:bg-white/5 cursor-pointer"
+                    >
+                      Fermer
+                    </button>
                   </div>
                 </div>
-
-                {submitError && (
-                  <div className="p-3 bg-rose-50 text-rose-700 border border-rose-200 rounded-md flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
-                    <span>{submitError}</span>
+              ) : (
+                <form onSubmit={handleApplySubmit} className="space-y-4 text-xs">
+                  {/* Automatic profile summary */}
+                  <div className="bg-indigo-950/50 border border-indigo-800/50 rounded-2xl p-4 space-y-1 text-indigo-200">
+                    <div className="font-bold flex items-center gap-1.5 text-indigo-300">
+                      <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+                      <span>Éléments joints depuis votre profil :</span>
+                    </div>
+                    <div className="text-slate-300 flex flex-wrap gap-x-4 gap-y-1 text-[11px] pt-1">
+                      <span>
+                        Candidat :{' '}
+                        <strong className="text-white">
+                          {user?.firstName} {user?.lastName}
+                        </strong>
+                      </span>
+                      <span>
+                        Expérience :{' '}
+                        <strong className="text-white">{candidateProfile?.chatterExperience || 'Débutant'}</strong>
+                      </span>
+                      <span>
+                        Langues :{' '}
+                        <strong className="text-white">
+                          {candidateProfile?.languages.map((l) => l.language).join(', ') ||
+                            'Français'}
+                        </strong>
+                      </span>
+                    </div>
                   </div>
-                )}
 
-                {/* Motivation field */}
-                <div>
-                  <label className="block font-semibold text-slate-800 mb-1">
-                    Message de motivation <span className="text-rose-500">*</span>
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={motivation}
-                    onChange={(e) => setMotivation(e.target.value)}
-                    placeholder="Présentez brièvement vos atouts, votre enthousiasme pour l'univers de la créatrice et votre méthode de travail..."
-                    className="w-full p-2.5 border border-slate-200 rounded-md focus:outline-none focus:border-indigo-500"
-                    required
-                  />
-                  <div className="text-[10px] text-slate-400 mt-0.5">
-                    Minimum 20 caractères ({motivation.length} saisis).
+                  {submitError && (
+                    <div className="p-3 bg-rose-950/80 text-rose-300 border border-rose-800/50 rounded-xl flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{submitError}</span>
+                    </div>
+                  )}
+
+                  {/* Motivation */}
+                  <div>
+                    <label className="block font-semibold text-slate-200 mb-1">
+                      Message de motivation <span className="text-rose-400">*</span>
+                    </label>
+                    <textarea
+                      rows={4}
+                      value={motivation}
+                      onChange={(e) => setMotivation(e.target.value)}
+                      placeholder="Pourquoi souhaitez-vous collaborer sur ce compte ? Présentez votre sérieux et votre aisance relationnelle écrite..."
+                      className="w-full p-3 border border-white/10 rounded-xl bg-[#181818] text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 text-xs leading-relaxed"
+                      required
+                    />
+                    <div className="text-[10px] text-slate-500 mt-1">
+                      Minimum 20 caractères ({motivation.length} saisis).
+                    </div>
                   </div>
-                </div>
 
-                {/* Relevant Experience */}
-                <div>
-                  <label className="block font-semibold text-slate-800 mb-1">
-                    Expérience pertinente ou compétences clés
-                  </label>
-                  <input
-                    type="text"
-                    value={relevantExperience}
-                    onChange={(e) => setRelevantExperience(e.target.value)}
-                    placeholder="Ex: 3 mois de chatter mode, aisance relationnelle écrite, orthographe irréprochable..."
-                    className="w-full p-2 border border-slate-200 rounded-md focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
+                  {/* Availability */}
+                  <div>
+                    <label className="block font-semibold text-slate-200 mb-1">
+                      Disponibilité spécifique pour cette offre
+                    </label>
+                    <input
+                      type="text"
+                      value={availabilityNote}
+                      onChange={(e) => setAvailabilityNote(e.target.value)}
+                      placeholder="Ex: Immédiate, créneau soirée (18h-23h), 20h/semaine..."
+                      className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                    />
+                  </div>
 
-                {/* Availability */}
-                <div>
-                  <label className="block font-semibold text-slate-800 mb-1">
-                    Vos disponibilités pour cette offre
-                  </label>
-                  <input
-                    type="text"
-                    value={availabilityNote}
-                    onChange={(e) => setAvailabilityNote(e.target.value)}
-                    placeholder="Ex: Disponible 20h/semaine dès lundi, créneau soirée (18h-23h)..."
-                    className="w-full p-2 border border-slate-200 rounded-md focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
+                  {/* Relevant experience */}
+                  <div>
+                    <label className="block font-semibold text-slate-200 mb-1">
+                      Expérience pertinente
+                    </label>
+                    <input
+                      type="text"
+                      value={relevantExperience}
+                      onChange={(e) => setRelevantExperience(e.target.value)}
+                      placeholder="Ex: 6 mois de chatter mode, vente écrite, orthographe excellente..."
+                      className="w-full p-2.5 border border-white/10 rounded-xl bg-[#181818] text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                    />
+                  </div>
 
-                {/* Additional Note */}
-                <div>
-                  <label className="block font-semibold text-slate-800 mb-1">
-                    Informations complémentaires (optionnel)
-                  </label>
-                  <input
-                    type="text"
-                    value={additionalNote}
-                    onChange={(e) => setAdditionalNote(e.target.value)}
-                    placeholder="Équipement disponible, connexion fibre, questions..."
-                    className="w-full p-2 border border-slate-200 rounded-md focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setApplyModalOpen(false)}
-                    className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium"
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="px-5 py-2 font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-md disabled:opacity-50 inline-flex items-center gap-2"
-                  >
-                    {submitting ? 'Envoi en cours...' : 'Confirmer et envoyer la candidature'}
-                  </button>
-                </div>
-              </form>
-            )}
+                  <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setApplyModalOpen(false)}
+                      className="px-4 py-2.5 text-slate-400 hover:text-white font-medium cursor-pointer"
+                    >
+                      Annuler
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="px-6 py-2.5 font-bold text-slate-900 bg-white hover:bg-slate-200 rounded-xl disabled:opacity-50 inline-flex items-center gap-2 cursor-pointer shadow-md"
+                    >
+                      {submitting ? 'Transmission...' : 'Confirmer et envoyer'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 };

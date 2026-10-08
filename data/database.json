@@ -21,6 +21,17 @@
       "lastName": "Dufresne",
       "isActive": true,
       "createdAt": "2026-09-15T10:30:00.000Z"
+    },
+    {
+      "id": "usr_2158397f5424c3c7",
+      "role": "CANDIDATE",
+      "email": "olamonde7@gmail.com",
+      "passwordHash": "ea4034105261a3685612bc45fd931dc97c1a3c521aac8e8c4a13ff29b23c2c9441e1ab00673100b1bb303f746b8333ae9a9d67047c92d963196effe7539913f7",
+      "salt": "a63926b04213b01defefbafe4e41e450",
+      "firstName": "Hyy",
+      "lastName": "Hh",
+      "isActive": true,
+      "createdAt": "2026-10-08T13:53:54.762Z"
     }
   ],
   "profiles": [
@@ -56,6 +67,29 @@
       ],
       "workExperience": "3 mois de chatter pour un créateur de contenu voyage, et 2 ans en support client relationnel par chat.",
       "updatedAt": "2026-09-18T14:20:00.000Z"
+    },
+    {
+      "id": "prof_dbed63a9fde5397d",
+      "userId": "usr_2158397f5424c3c7",
+      "country": "France",
+      "city": "",
+      "ageRange": "18-24",
+      "chatterExperience": "Débutant",
+      "experienceLevel": "Débutant",
+      "languages": [
+        {
+          "language": "Français",
+          "level": "Courant"
+        }
+      ],
+      "availability": "Temps partiel (15-25h)",
+      "timezone": "UTC+1 (Paris)",
+      "timeSlots": "Flexible / Soirée",
+      "workType": "Télétravail 100%",
+      "bio": "",
+      "skills": [],
+      "workExperience": "",
+      "updatedAt": "2026-10-08T13:54:19.683Z"
     }
   ],
   "jobs": [
@@ -313,6 +347,24 @@
       "userId": "usr_cand_camille",
       "createdAt": "2026-10-08T13:11:51.651Z",
       "expiresAt": "2026-10-15T13:11:51.651Z"
+    },
+    {
+      "token": "tok_9325c9257ed3ea61a9a3be0f09325a77b0b120ff1bc709f94dbae3c945a9271d",
+      "userId": "usr_2158397f5424c3c7",
+      "createdAt": "2026-10-08T13:53:54.763Z",
+      "expiresAt": "2026-10-15T13:53:54.763Z"
+    },
+    {
+      "token": "tok_c5e2c04807b11e7f15a439e1dd158f0daca65d38c6c9e5292e3d765ff0a83f33",
+      "userId": "usr_cand_camille",
+      "createdAt": "2026-10-08T14:19:12.612Z",
+      "expiresAt": "2026-10-15T14:19:12.612Z"
+    },
+    {
+      "token": "tok_0f47a48fc4b6a2249f31e7f5e9a246d277526dc9e832a53e3ae06e0388cf297b",
+      "userId": "usr_admin_master",
+      "createdAt": "2026-10-08T14:19:18.394Z",
+      "expiresAt": "2026-10-15T14:19:18.394Z"
     }
   ]
 }
